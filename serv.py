@@ -135,6 +135,20 @@ def getFileList():
 
 
 ########################################################################
+# Sends a message to the client
+# @param sock - the socket to send it over
+# @param message - the message
+########################################################################
+def sendMessage(sock, message):
+	# Pad the message with trailing $'s
+	while len(message) < LEN_LEN:
+		message += '$'
+
+	# Send the message
+	sendData(sock, message)
+
+
+########################################################################
 #                               Main                                   # 
 ########################################################################
 def main(port):  
@@ -179,6 +193,9 @@ def main(port):
                 fileInfo = getFileInfo(cmdinfo['filename'])
 
                 if fileInfo:
+                    # Send an OK message to the client.
+                    sendMessage(client, '1')
+
                     # Send the file size.
                     sendSize(dataSocket, fileInfo[1])
 
@@ -188,7 +205,8 @@ def main(port):
                     # Close the file.
                     fileInfo[0].close()
                 else:
-                    sendSize(dataSocket, -1)
+                    # Send error message to the client.
+                    sendMessage(client, '0')
 
             elif cmdinfo['cmd'] == "quit":
                 print "quit command"
