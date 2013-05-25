@@ -138,10 +138,23 @@ def recvSize(sock):
     strSize = recvData(sock, LEN_LEN)
 
     # Conver the size to an integer and return
-    try:
-        return int(strSize)
-    except:
-        return None
+    return int(strSize)
+
+
+########################################################################
+# Recieves a control message
+# @param sock - the socket over which to receive the size
+# @return - True if message given was an OK message; False otherwise.
+########################################################################
+def recvMessage(sock):
+    # Get the message.
+    message = recvData(sock, LEN_LEN).replace("$", "")
+
+    # Read the message.
+    if (int(message)):
+        return True
+    else:
+        return False
 
 
 ########################################################################
@@ -228,13 +241,14 @@ def main(server, port):
             strcmd = getCmdStr(dataport, 'get', filename)
             sendData(cmdSocket, strcmd)
 
-            #listen for reply          
-            client, address = datasock.accept()
+            # Get message, then determine if OK to proceed.
+            if (recvMessage(cmdSocket)):
+                # Listen for reply          
+                client, address = datasock.accept()
 
-            # Receive the size of the file from the server.
-            fileSize = recvSize(client)
-            
-            if fileSize:
+                # Receive the size of the file from the server.
+                fileSize = recvSize(client)
+
                 # Since we know the filename, open the file.
                 file = open(filename, 'w')
 
