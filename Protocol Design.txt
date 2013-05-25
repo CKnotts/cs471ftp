@@ -14,11 +14,17 @@ Designing the Protocol
 - Scenario for get:                                     Connection type:
     user:   get <filename>                                  -
     client: send get command & filename to server           Control
-    server: send file size to client                        Data
-    client: prepare new file with <filename>                -
-    client: prepare to receive <file size> of data          -
-    server: send file to client                             Data
-    client: get & save file                                 Data
+    server: send message (OK/Not OK) to client              Control
+    -- if OK ---
+        server: send file size to client                    Data
+        client: prepare new file with <filename>            -
+        client: prepare to receive <file size> of data      -
+        server: send file to client                         Data
+        client: get & save file                             Data
+        client: display <filename> and <file size> to user  -
+    --- if Not OK ---
+        client: display error message to user               -
+                (Filename does not exist)
 
 - Scenario for ls:                                      Connection type:
     user:   ls                                              -
@@ -31,10 +37,16 @@ Designing the Protocol
 - Scenario for put:                                     Connection type:
     user:   put <filename>                                  -
     client: send put command & filename to server           Control
-    client: send file size to server                        Data
-    server: prepare a new file with <filename>              -
-    server: prepare to receive <file size> of data          -
-    client: send file to server                             Data
+    server: send message (OK/Not OK) to client              Control
+    --- if OK ---
+        client: send file size to server                    Data
+        server: prepare a new file with <filename>          -
+        server: prepare to receive <file size> of data      -
+        client: send file to server                         Data
+        server: get & save file                             Data
+    --- if Not OK ---
+        client: display error message to user.              -
+                (Filename exists -- or do we want to allow overwrites?)
 
 - Scenario for quit:                                    Connection type:
     user:   quit                                            -
