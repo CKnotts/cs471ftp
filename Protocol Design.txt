@@ -56,7 +56,7 @@ Designing the Protocol
 - Error messages:                                       Connection type:
     Command does not exist
         client -> user                                      -
-    File does not exist
+    Bad filename
         client -> user                                      -
         server -> client                                    Control
 
