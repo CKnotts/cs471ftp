@@ -102,7 +102,6 @@ def recvSize(sock):
     print "In recvSize"
     # Get the string size
     strSize = recvData(sock, LEN_LEN)
-    print strSize
     # Conver the size to an integer and return
     return int(strSize)
 
@@ -197,7 +196,6 @@ def main(port):
 
                     # Receive the size of the file from the server.
                     fileSize = recvSize(dataSocket)
-                    print fileSize
 
                     # Since we know the filename, open the file.
                     file = open(cmdinfo['filename'], 'w')
