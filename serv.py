@@ -25,19 +25,19 @@ CMD_LEN = 100
 # @param sock - the socket to send the data over
 # @param data - the actual data to send
 ########################################################################
-def sendData(sock, data):	
-	# The total number of bytes sent in one shot
-	numSent = 0	
-	# The cumulative number of bytes sent
-	totalNumSent = 0	
-	# Send all the data
-	while totalNumSent < len(data):		
-		# Send as much as you can
-		numSent = sock.send(data[totalNumSent:])		
-		# Update how many bytes were sent thus far
-		totalNumSent += numSent
+def sendData(sock, data):   
+    # The total number of bytes sent in one shot
+    numSent = 0 
+    # The cumulative number of bytes sent
+    totalNumSent = 0    
+    # Send all the data
+    while totalNumSent < len(data):     
+        # Send as much as you can
+        numSent = sock.send(data[totalNumSent:])        
+        # Update how many bytes were sent thus far
+        totalNumSent += numSent
 
-	return totalNumSent
+    return totalNumSent
 
 
 ########################################################################
@@ -46,19 +46,19 @@ def sendData(sock, data):
 # @param size - the size to send
 ########################################################################
 def sendSize(sock, size):
-	# Convert the size into string
-	strSize = str(size) 	
-	# Padd the size with leading 0's
-	while len(strSize) < LEN_LEN:
-		strSize = "0" + strSize	
-	# Send the size
-	sendData(sock, strSize)
+    # Convert the size into string
+    strSize = str(size)     
+    # Padd the size with leading 0's
+    while len(strSize) < LEN_LEN:
+        strSize = "0" + strSize 
+    # Send the size
+    sendData(sock, strSize)
 
 
 ########################################################################
 # getFileInfo - gets information about a file
 # @param path - the relative path to the file
-# #return - Tuple - (file pointer, file size, file name)	
+# #return - Tuple - (file pointer, file size, file name)    
 #         - None if invalid file path
 ########################################################################
 def getFileInfo(path):
@@ -79,18 +79,17 @@ def getFileInfo(path):
 # @return - the received data
 ########################################################################
 def recvData(sock, size):
+    # The buffer to store the data
+    data = ""
 
-	# The buffer to store the data
-	data = ""
+    # Keep receiving until all is received
+    while size > len(data):
 
-	# Keep receiving until all is received
-	while size > len(data):
+        # Receive as much as you can
+        data += sock.recv(size - len(data))
 
-		# Receive as much as you can
-		data += sock.recv(size - len(data))
-
-	# Return the received data
-	return data
+    # Return the received data
+    return data
 
 
 ########################################################################
@@ -99,7 +98,6 @@ def recvData(sock, size):
 # @return - the received size
 ########################################################################
 def recvSize(sock):
-    print "In recvSize"
     # Get the string size
     strSize = recvData(sock, LEN_LEN)
     # Conver the size to an integer and return
@@ -139,18 +137,18 @@ def getFileList():
 # @param message - the message
 ########################################################################
 def sendMessage(sock, message):
-	# Pad the message with trailing $'s
-	while len(message) < LEN_LEN:
-		message += '$'
+    # Pad the message with trailing $'s
+    while len(message) < LEN_LEN:
+        message += '$'
 
-	# Send the message
-	sendData(sock, message)
+    # Send the message
+    sendData(sock, message)
 
 
 ########################################################################
 #                               Main                                   # 
 ########################################################################
-def main(port):  
+def main(port):
     #number of parallel connections
     backlog = 10
     #bind the socket and listen for new connections
