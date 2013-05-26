@@ -1,5 +1,5 @@
 cs471ftp
 ========
 Todo
-  - Push
-  - Design the protocol
+  - Verify everything works as intended
+  - Verify the documents are correct
