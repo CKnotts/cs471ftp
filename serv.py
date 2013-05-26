@@ -159,20 +159,24 @@ def main(port):
 
     while True:
         client, address = cmdSocket.accept()
-        print "Connection opend with: " + str(address)
+        print "Connection opened with: " + str(address)
 
         #listen forever
-        while closeconn == False:
-            cmdinfo = recvCmd(client)        
+        while True:
+            cmdinfo = recvCmd(client)
             
             #connect the datasocket to the client
-            dataSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            datasockinfo = (address[0], cmdinfo['port'])
-            print datasockinfo
-            dataSocket.connect(datasockinfo)
+            if cmdinfo['port'] != port:
+                dataSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                datasockinfo = (address[0], cmdinfo['port'])
+                dataSocket.connect(datasockinfo)
+            else:
+                print "quit command from: " + str(address[0])
+                client.close()
+                break
             
             if cmdinfo['cmd'] == "ls ":
-                print "ls command"
+                print "ls command from: " + str(datasockinfo)
 
                 files = getFileList()
                 strfiles = str(files)
@@ -182,7 +186,7 @@ def main(port):
                 sendData(dataSocket, strfiles)
 
             elif cmdinfo['cmd'] == "put":
-                print "put command"
+                print "put command from: " + str(datasockinfo)
 
                 fileInfo = getFileInfo(cmdinfo['filename'])
 
@@ -226,7 +230,7 @@ def main(port):
                     sendMessage(client, '0')
 
             elif cmdinfo['cmd'] == "get":
-                print "get command"
+                print "get command from: " + str(datasockinfo)
 
                 fileInfo = getFileInfo(cmdinfo['filename'])
 
@@ -246,16 +250,12 @@ def main(port):
                     # Send error message to the client.
                     sendMessage(client, '0')
 
-            elif cmdinfo['cmd'] == "quit":
-                print "quit command"
-                client.close()
-                closeconn = True
             else:
-                print "Error, unknown command"
+                print "Error, unknown command from: " + str(datasockinfo)
 
             dataSocket.close()
         print "connection closed"
-            
+
     return
 
 
