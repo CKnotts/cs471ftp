@@ -72,7 +72,6 @@ def sendSize(sock, size):
     while len(strSize) < LEN_LEN:
         strSize = "0" + strSize	
     # Send the size
-    print strSize
     sendData(sock, strSize)
 
 
@@ -293,7 +292,7 @@ def main(server, port):
                 dataport = addr[1]
                 datasock.listen(1)
 
-                strcmd = getCmdStr(port, 'put', filename)
+                strcmd = getCmdStr(dataport, 'put', filename)
                 sendData(cmdSocket, strcmd)
 
                 # Get message, then determine if OK to proceed.
