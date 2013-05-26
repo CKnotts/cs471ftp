@@ -62,7 +62,7 @@ Designing the Protocol
 
 
 
------- Professor Goffman's Questions ------
+------ Professor Gofman's Questions ------
 
 - What kinds of messages will be exchanged across the control channel?
     commands - ls, get, put
@@ -91,12 +91,15 @@ Designing the Protocol
 
 
 - What sizes/formats will the messages have?
-    Sizes: 100B
-    Formats:
+    Sizes:      100B
+    Formats:    String;
+                Commands:   Dictionary/list
+                Messages:   0 = Error; 1 = OK
 
 
 - What message exchanges have to take place in order to setup a file
   transfer channel?
+    --- Please see the scenarios above ---
     
 
 - How will the receiving side know when to start/stop receiving the file?
